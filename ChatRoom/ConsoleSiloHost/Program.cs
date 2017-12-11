@@ -16,6 +16,7 @@ namespace ConsoleSiloHost
         {
             // First, configure and start a local silo
             var siloConfig = ClusterConfiguration.LocalhostPrimarySilo();
+            siloConfig.AddMemoryStorageProvider();
             var silo = new SiloHost("TestSilo", siloConfig);
             silo.InitializeOrleansSilo();
             silo.StartOrleansSilo();
@@ -48,8 +49,6 @@ namespace ConsoleSiloHost
             chatRoomGrain.Join(usr1, usr2);
 
             chatRoomGrain.AddMessage(new Message { Id = Guid.NewGuid(), SenderId = usr1.Id, Content = "Hey!" });
-
-            //chatRoomGrain.
 
             Console.WriteLine("\nPress Enter to terminate...");
             Console.ReadLine();

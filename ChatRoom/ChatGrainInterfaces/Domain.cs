@@ -1,13 +1,16 @@
-﻿using System;
+﻿using Orleans;
+using System;
 using System.Collections.Generic;
 
 namespace ChatGrainInterfaces
 {
-    public class User
+    public class User //: IGrainState
     {
         public Guid Id { get; set; }
         public string Nickname { get; set; }
         public IEnumerable<UserChatRoom> ChatRooms { get; set; } = new List<UserChatRoom>();
+        public object State { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string ETag { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 
     public class UserChatRoom

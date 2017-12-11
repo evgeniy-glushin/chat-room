@@ -2,14 +2,18 @@ using System.Threading.Tasks;
 using Orleans;
 using ChatGrainInterfaces;
 using System;
+using Orleans.Providers;
 
 namespace ChatGrains
 {
-    public class UserGrain : Grain, IUserGrain
+    [StorageProvider(ProviderName = "MemoryStore")]
+    public class UserGrain : Grain<User>, IUserGrain
     {
-        public Task<User> Create(User usr)
+        public async Task<User> Create(User usr)
         {
-            throw new NotImplementedException();
+            State = usr;
+            await WriteStateAsync();
+            return State;
         }
 
         public Task<UserChatRoom> GetChatRooms()
@@ -18,8 +22,7 @@ namespace ChatGrains
         }
 
         public async Task<bool> SendMsg(Guid chatRoomId, string msg)
-        {
-
+        {            
             return true;
         }
     }
