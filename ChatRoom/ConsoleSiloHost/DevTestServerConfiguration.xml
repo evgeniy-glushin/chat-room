@@ -4,7 +4,7 @@
     <StorageProviders>
       <Provider Type="Orleans.Storage.DynamoDBStorageProvider" 
                 Name="DynamoDBStorage"
-                DataConnectionString="Service=us-west-2;AccessKey=AKIAJDQXILVGD5INKIOQ;SecretKey=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;" />
+                DataConnectionString="Service=us-west-2;AccessKey=;SecretKey=;" />
       
       <Provider Type="Orleans.Storage.MemoryStorage" Name="MemoryStore" />
       <!-- To use Azure storage, uncomment one of the following lines: -->
