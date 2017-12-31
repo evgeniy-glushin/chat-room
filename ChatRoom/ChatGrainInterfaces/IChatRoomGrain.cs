@@ -10,7 +10,7 @@ namespace ChatGrainInterfaces
     public interface IChatRoomGrain : IGrainWithGuidKey
     {
         Task<ChatRoom> Create(ChatRoom chatRoom);
-        Task<ChatRoom> Join(params User[] participant);
+        Task<UserChatRoom[]> Join(params IUserGrain[] participant);
         Task<IEnumerable<Message>> GetMessages();
         Task<Message> AddMessage(Message msg);
     }

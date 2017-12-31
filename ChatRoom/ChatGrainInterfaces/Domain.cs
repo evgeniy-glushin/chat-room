@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace ChatGrainInterfaces
 {
-    public class User //: IGrainState
+    public class User : IGrainState
     {
         public Guid Id { get; set; }
         public string Nickname { get; set; }
-        public IEnumerable<UserChatRoom> ChatRooms { get; set; } = new List<UserChatRoom>();
-        public object State { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string ETag { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<UserChatRoom> ChatRooms { get; set; } = new List<UserChatRoom>();
+        public object State { get; set; }
+        public string ETag { get; set; }
     }
 
     public class UserChatRoom
@@ -19,11 +19,14 @@ namespace ChatGrainInterfaces
         public string Name { get; set; }
     }
 
-    public class ChatRoom
+    public class ChatRoom : IGrainState
     {
         public Guid Id { get; set; }
-        public IEnumerable<Guid> Participants { get; set; }
-        public IEnumerable<Message> Messages { get; set; }
+        public string Name { get; set; }
+        public List<Guid> Participants { get; set; } = new List<Guid>();
+        public List<Message> Messages { get; set; } = new List<Message>();
+        public object State { get; set; }
+        public string ETag { get; set; }
     }
 
     public class Message
