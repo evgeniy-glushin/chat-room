@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChatRoomGrain.cs" />
+    <Compile Include="MessageHub.cs" />
     <Compile Include="UserGrain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

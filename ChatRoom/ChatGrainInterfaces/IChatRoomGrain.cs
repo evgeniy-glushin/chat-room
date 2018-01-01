@@ -10,5 +10,8 @@ namespace ChatGrainInterfaces
         Task<UserChatRoom[]> Join(params IUserGrain[] participant);
         Task<List<Message>> GetMessages();
         Task<Message> AddMessage(Message msg);
+
+        Task Subscribe(IMessageHub observer);
+        Task Unsubscribe(IMessageHub observer);
     }
 }

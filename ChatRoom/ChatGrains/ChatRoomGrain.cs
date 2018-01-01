@@ -53,8 +53,27 @@ namespace ChatGrains
 
             State.Messages.Add(msg);
             await WriteStateAsync();
-
+            _subscriptionManager.Notify(x => x.Notify(msg, State.Participants));
             return msg;
+        }
+
+        ObserverSubscriptionManager<IMessageHub> _subscriptionManager;
+        public override Task OnActivateAsync()
+        {
+            _subscriptionManager = new ObserverSubscriptionManager<IMessageHub>();
+            return base.OnActivateAsync();
+        }
+
+        public Task Subscribe(IMessageHub observer)
+        {
+            _subscriptionManager.Subscribe(observer);
+            return Task.CompletedTask;
+        }
+
+        public Task Unsubscribe(IMessageHub observer)
+        {
+            _subscriptionManager.Unsubscribe(observer);
+            return Task.CompletedTask;
         }
     }
 }

@@ -6,6 +6,7 @@ using Orleans.Runtime.Host;
 using ChatGrainInterfaces;
 using Orleans.Providers;
 using System.Collections.Generic;
+using ChatGrains;
 
 namespace ConsoleSiloHost
 {
@@ -33,7 +34,7 @@ namespace ConsoleSiloHost
             //siloConfig.LoadFromFile("DevTestServerConfiguration.xml");
             var silo = new SiloHost("TestSilo", siloConfig);
             //silo.ConfigFileName = "DevTestServerConfiguration.xml";
-            
+
             silo.InitializeOrleansSilo();
             silo.StartOrleansSilo();
 
@@ -57,17 +58,14 @@ namespace ConsoleSiloHost
 
             usr1Grain.Create(usr1).Wait();
             usr2Grain.Create(usr2).Wait();
-            
+
             var chatRoom = new ChatRoom() { Id = Guid.Parse("8ac512e4-a618-4ba0-b69b-c3051d53888c"), Name = "eugene&petro" };
             var chatRoomGrain = client.GetGrain<IChatRoomGrain>(chatRoom.Id);
             chatRoomGrain.Create(chatRoom).Wait();
 
             chatRoomGrain.Join(usr1Grain, usr2Grain).Wait();
 
-            //chatRoomGrain.AddMessage(new Message { Id = Guid.NewGuid(), SenderId = usr1.Id, Content = "Hey!" });
-
-            //var u1 = usr1Grain.Get().Result;
-            //var u2 = usr2Grain.Get().Result;
+            SubscribeToMessageNotifications(client, chatRoom, chatRoomGrain);
 
             usr1Grain.SendMsg("Hi, group!", chatRoomGrain).Wait();
 
@@ -79,6 +77,13 @@ namespace ConsoleSiloHost
             // Shut down
             client.Close();
             silo.ShutdownOrleansSilo();
+        }
+
+        private static void SubscribeToMessageNotifications(IClusterClient client, ChatRoom chatRoom, IChatRoomGrain chatRoomGrain)
+        {
+            var msgHub = new MessageHub(chatRoom);
+            var msgHubObj = client.CreateObjectReference<IMessageHub>(msgHub).Result;
+            chatRoomGrain.Subscribe(msgHubObj);
         }
     }
 }

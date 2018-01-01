@@ -42,8 +42,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain.cs" />
+    <Compile Include="DomainEntities.cs" />
     <Compile Include="IChatRoomGrain.cs" />
+    <Compile Include="IMessageHub.cs" />
     <Compile Include="IUserGrain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
