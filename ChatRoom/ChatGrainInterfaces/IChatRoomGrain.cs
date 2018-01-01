@@ -1,8 +1,5 @@
 ﻿using Orleans;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ChatGrainInterfaces
@@ -11,7 +8,7 @@ namespace ChatGrainInterfaces
     {
         Task<ChatRoom> Create(ChatRoom chatRoom);
         Task<UserChatRoom[]> Join(params IUserGrain[] participant);
-        Task<IEnumerable<Message>> GetMessages();
+        Task<List<Message>> GetMessages();
         Task<Message> AddMessage(Message msg);
     }
 }

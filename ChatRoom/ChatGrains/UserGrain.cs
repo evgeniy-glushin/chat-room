@@ -38,11 +38,17 @@ namespace ChatGrains
             throw new NotImplementedException();
         }
 
-        public async Task<bool> SendMsg(Guid chatRoomId, string msg)
-        {            
-            return true;
-        }
+        public async Task<Message> SendMsg(string msg, IChatRoomGrain chatRoomGrain)
+        {
+            var newMsg = new Message
+            {
+                Id = Guid.NewGuid(),
+                Content = msg,
+                SenderId = State.Id,
+                SenderNickname = State.Nickname
+            };
 
-       
+            return await chatRoomGrain.AddMessage(newMsg);
+        }
     }
 }

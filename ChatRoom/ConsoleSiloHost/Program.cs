@@ -66,8 +66,12 @@ namespace ConsoleSiloHost
 
             //chatRoomGrain.AddMessage(new Message { Id = Guid.NewGuid(), SenderId = usr1.Id, Content = "Hey!" });
 
-            var u1 = usr1Grain.Get().Result;
-            var u2 = usr2Grain.Get().Result;
+            //var u1 = usr1Grain.Get().Result;
+            //var u2 = usr2Grain.Get().Result;
+
+            usr1Grain.SendMsg("Hi, group!", chatRoomGrain).Wait();
+
+            var msgs = chatRoomGrain.GetMessages().Result;
 
             Console.WriteLine("\nPress Enter to terminate...");
             Console.ReadLine();

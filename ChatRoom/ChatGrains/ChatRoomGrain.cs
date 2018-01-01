@@ -26,10 +26,12 @@ namespace ChatGrains
 
         public async Task<UserChatRoom[]> Join(params IUserGrain[] participants)
         {
-            State.Participants.AddRange(
-                (await Task.WhenAll(participants.Select(x => x.Get()))).Select(x => x.Id)
-            );
+            IEnumerable<Guid> newParticipants = (await Task.WhenAll(participants.Select(x => x.Get())))
+                .Select(x => x.Id)
+                .Except(State.Participants)
+                .ToList();
 
+            State.Participants.AddRange(newParticipants);
             await WriteStateAsync();
 
             return await Task.WhenAll(participants.Select(AddChatRoom));
@@ -38,17 +40,21 @@ namespace ChatGrains
                 user.AddChatRoom(new UserChatRoom { Id = State.Id, Name = State.Name });
         }
 
-        public Task<IEnumerable<Message>> GetMessages()
+        public Task<List<Message>> GetMessages()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(State.Messages);
         }
 
 
-        public Task<Message> AddMessage(Message msg)
+        public async Task<Message> AddMessage(Message msg)
         {
             // TODO: make sure the participant in the room
             // TODO: get notified the other participants
-            throw new NotImplementedException();
+
+            State.Messages.Add(msg);
+            await WriteStateAsync();
+
+            return msg;
         }
     }
 }
